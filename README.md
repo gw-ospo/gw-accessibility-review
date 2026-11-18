@@ -1,268 +1,125 @@
-# gwospo-design
+# gw-accessibility-review
 
-Graphic design materials for the George Washington University Open Source Program Office.
+An accessibility reviewer for everything the George Washington University Open Source Program
+Office (OSPO) and the GW Open Source Conference (OSCON) publish: posters, flyers, slide decks,
+PDFs, reports, prospectuses, web pages, email, social posts, charts, video, and signage.
+
+It checks the piece against the GW
+[Digital Content Accessibility Policy](https://compliance.gwu.edu/digital-content-accessibility-policy)
+(WCAG 2.1 Level AA) and the GW
+[Standards and Best Practices](https://accessibility.gwu.edu/standards-and-best-practices),
+and gives back a written report in the same style as the GW design review.
 
 | What | It is |
 |---|---|
-| [`DESIGN.md`](.claude/skills/gw-design-review/brand/DESIGN.md) | Our design specification — the GW brand colours and typefaces, plus the OSCON palette, logo, and pattern rules. If you make anything for OSPO or OSCON, this is the rulebook. |
-| [`.claude/skills/gw-design-review/`](.claude/skills/gw-design-review/) | A design reviewer you can run on your own work before anyone else sees it. |
+| [`.claude/skills/gw-accessibility-review/`](.claude/skills/gw-accessibility-review/) | The reviewer. Run it before anything goes out. |
+| [`references/gw-standards.md`](.claude/skills/gw-accessibility-review/references/gw-standards.md) | What GW requires, and where each rule comes from. |
+| [`references/accessibility-checks.md`](.claude/skills/gw-accessibility-review/references/accessibility-checks.md) | The testable checks, each tagged with its source. |
+
+It is the companion to `gw-design-review`: that skill asks "is it on brand and well composed?",
+this one asks "can everyone use it?". Run both.
 
 ---
 
-## Get your design reviewed
+## Get your piece reviewed
 
-Made a poster, flyer, slide deck, social graphic, one-pager, or web page? You can have it
-reviewed against our brand guidelines in a few minutes, by yourself, as many times as you
-like. Nobody is watching, and there's no wrong answer — that's the point of using it early.
+Attach a PDF, image, HTML file, or a link, and say where it will be published:
 
-**You'll get back a written report with:**
+> Check this poster for accessibility. It is a PDF and an Instagram post for the OSCON call for papers.
 
-- Two or three things that are genuinely working, and why
-- What reads first, second, and third when someone glances at your page — and whether
-  that's the order you wanted
-- A ranked list of things to change, each one saying where the problem is, which rule it
-  relates to, and exactly what to do about it
+> Run the accessibility review on this sponsorship prospectus PDF.
 
-Findings come in three flavours, so you know what's urgent:
+> Review this email HTML before I send it.
+
+**You get back a report with:**
+
+- A **verdict**: Not ready to publish, Ready with verification needed, or Ready to publish
+- Two or three things that work, and why
+- A POUR summary (Perceivable, Operable, Understandable, Robust)
+- Ranked findings, each saying where, which rule, **who it affects**, and exactly how to fix it
+- A **Not verified** list: things the reviewer cannot see from a file, such as alt text in
+  Canva or caption files, with how to check them yourself
+- The three highest-leverage fixes
+- The numbers behind the contrast and structure checks, so you can re-run them
 
 | | |
 |---|---|
-| **Must fix** | Breaks a brand rule or an accessibility requirement. Not a matter of taste. |
-| **Should fix** | Makes the piece harder to read than it needs to be. |
-| **Consider** | A suggestion. Take it or leave it. |
+| **Must fix** | Fails WCAG 2.1 AA or a GW Standards requirement. Under GW Policy, this blocks publishing. |
+| **Should fix** | Advisory GW guidance or house practice. Makes the piece harder to use. |
+| **Consider** | Beyond the requirement, including WCAG 2.2 items. Optional. |
 
-### Before you ask, have three answers ready
+**What it cannot do.** It works from what you give it. It cannot see alt text inside Canva,
+Word, or social platforms, captions you did not attach, or how a page behaves with a keyboard,
+and it says so rather than guessing. It does not claim a piece is "accessible", and it gives
+no legal opinion. Questions about the policy go to the Office of Ethics, Compliance, and Risk
+(202-994-3386). Barriers are reported at accessibility.gwu.edu/report-barrier-accessibility.
+Under the policy, content owners have 30 days to fix reported barriers.
 
-The advice genuinely changes depending on these. The reviewer works out what it can from the
-file itself and asks about the rest, so saying them up front saves a round trip:
-
-1. **What is it, and where will it end up?** A printed 11×17 poster, a 16:9 slide, an
-   Instagram post, a web page. Type that's fine on a poster is illegible on a phone.
-2. **Who is it for, and what should they do after seeing it?** Submit a talk, sponsor the
-   conference, show up on a date.
-3. **Is this OSCON, or general OSPO?** OSCON has three extra accent colours that aren't
-   allowed on other GW work.
-
-### Then just ask
-
-Attach your file — a PDF, a PNG or JPG, or a link to your Canva design — and say something
-like:
-
-> Review this poster against our brand guidelines. It's a printed 11×17 for the OSCON call
-> for papers.
-
-> Is this deck on brand? It's a 16:9 slide deck for an OSPO talk to university leadership.
-
-> Here's my Instagram graphic for OSCON — what would you change?
+Giving it the source file (Word, PowerPoint, HTML) as well as the export makes the review
+much more complete.
 
 ---
 
 ## Setting it up
 
-This reviewer is an **Agent Skill** — an open format that most AI tools now understand. You
-can use it in Claude, ChatGPT/Codex, Cursor, VS Code with Copilot, and around forty other
-tools. The only thing that differs between them is which folder they look in.
+This is an **Agent Skill**. Where it goes depends on your tool; the setup is the same as for
+`gw-design-review`.
 
-Find your tool below.
-
-| If you use… | What to do |
+| If you use... | What to do |
 |---|---|
-| **claude.ai** in a browser | Download [`gw-design-review.zip`](https://github.com/gw-ospo/gwospo-design/raw/main/gw-design-review.zip) and upload it — see below. |
-| **Claude Cowork**, the **Claude desktop app**, or **Claude Code** | Download the repository (below) and point Claude at the folder. Nothing to install. |
-| **Cursor**, or **VS Code with Copilot** | Same as Claude — both read the same folder. |
-| **ChatGPT or Codex** | Download the repository, then one extra copy step — see below. |
-| **Anything else** | Use the no-setup method at the bottom. It works everywhere. |
+| **claude.ai** in a browser | Build the upload package with `sh scripts/build-skill-zip.sh`, then upload `gw-accessibility-review.zip` under Settings, Capabilities, Skills. Do not upload the repository ZIP: it nests `SKILL.md` too deeply. |
+| **Claude Cowork, Claude desktop, Claude Code** | Download or clone the repository and point the tool at the folder. The skill loads from `.claude/skills/`. |
+| **Cursor, VS Code with Copilot** | Same as Claude. They also read `.claude/skills/`. |
+| **ChatGPT / Codex** | Copy `.claude/skills/gw-accessibility-review` into `.agents/skills/`. |
+| **Anything else** | Attach `references/gw-standards.md`, `references/accessibility-checks.md` and `references/report-format.md` to your conversation and ask for a review in that format. You lose the measured contrast and structure checks. |
 
-> **Downloading the repository** means: click the green **Code** button at the top of the
-> GitHub page, then **Download ZIP**, and unzip it somewhere you'll find again. Your
-> Documents folder is fine.
+### Helper scripts
 
-### claude.ai in a browser
+Plain Python, run for you during a review. You only need these for a quick number.
 
-**Do not upload the repository ZIP here** — Claude will reject it with an error about the
-MD file needing to be at the top level. That ZIP wraps everything in extra folders, so
-Claude can't find the skill inside it.
+```bash
+cd .claude/skills/gw-accessibility-review
 
-Use the ready-made package instead. There is no zipping or compressing to do:
+# Contrast for one pair, or the whole palette against the usual backgrounds
+python3 scripts/contrast.py "#FFD34D" "#FFFFFF"
+python3 scripts/contrast.py --palette
 
-1. Download [**`gw-design-review.zip`**](https://github.com/gw-ospo/gwospo-design/raw/main/gw-design-review.zip).
-   (On the GitHub page it's the file called `gw-design-review.zip` — click it, then click
-   the download button.)
-2. In Claude's **Settings**, find **Capabilities → Skills**.
-3. Click **Upload skill** and choose the file you just downloaded. Don't unzip it first.
+# Headings, lang, title, alt attributes, link text, document links, layout tables
+python3 scripts/html_audit.py page.html
 
-The menu wording moves around from time to time — look for anything called **Skills**.
+# Tagged? real text? title, language, figure alt text, headings in the tag tree
+python3 scripts/pdf_audit.py document.pdf
 
-Once it's uploaded it works in every conversation, so this is a one-time setup.
+# Render PDF pages to PNG; match flat colours in a graphic against the palette
+python3 scripts/rasterize.py document.pdf --pages 2-4
+python3 scripts/palette_audit.py poster.png
+```
 
-### Claude Cowork, Claude desktop, Claude Code, Cursor, VS Code
-
-Download the repository as described above, then point your tool at the unzipped folder.
-The reviewer is already inside it and loads automatically — there's nothing to install.
-
-### ChatGPT and Codex
-
-Codex looks in a folder called `.agents/skills` instead. After downloading the repository:
-
-1. In the unzipped folder, open `.claude/skills` and copy the `gw-design-review` folder.
-2. At the top level of the unzipped folder, make a folder called `.agents`, and inside that
-   one called `skills`.
-3. Paste `gw-design-review` into `.agents/skills`.
-
-Folders starting with a dot are hidden on a Mac — press
-<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>.</kbd> in Finder to show them.
-
-If you'd rather have it available in every project, put the folder in `.agents/skills`
-inside your home folder instead.
-
-### No setup at all — works in any AI tool
-
-You don't have to install anything. The instructions are just text files, so you can hand
-them over directly.
-
-Attach these files to your conversation, along with your design:
-
-- `.claude/skills/gw-design-review/brand/DESIGN.md`
-- `.claude/skills/gw-design-review/references/brand-checks.md`
-- `.claude/skills/gw-design-review/references/design-principles.md`
-- `.claude/skills/gw-design-review/references/report-format.md` — optional, but it's what
-  keeps the report useful and specific rather than a list of complaints
-
-Then ask:
-
-> Review my design against the brand checks and design principles in these files. Give me a
-> report with what's working, then a ranked list of fixes labelled Must fix / Should fix /
-> Consider.
-
-The one thing you lose this way is the automatic colour-contrast measurement, so if a colour
-looks borderline, check it yourself at
-[WebAIM's contrast checker](https://webaim.org/resources/contrastchecker/).
-
----
-
-## A few things worth knowing
-
-**Ask early, not at the end.** A review is most useful while things are still easy to move.
-Running it on a half-finished draft is a completely normal thing to do.
-
-**It won't redesign your work.** It tells you what to change and why, and then stops. That's
-deliberate — you learn more fixing it yourself, and it's your design.
-
-**If it's wrong, say so.** It can misread a layout, especially in a screenshot. Push back
-and ask it to look again.
-
-**Two separate things get checked.** Whether you followed the brand rules, and whether the
-layout communicates. You can pass one and fail the other — a page can be perfectly on-palette
-and still impossible to read.
-
-**The four principles** it checks against — proximity, alignment, repetition, contrast — come
-from Robin Williams' *The Non-Designer's Design Book*. It's short and non-technical, and
-reading it is the best few hours you can spend if you'd like to stop needing the reviewer.
+`contrast.py` and `html_audit.py` need nothing extra. `pdf_audit.py` is reliable with
+`pip install pypdf`; without it, it scans raw bytes and reports "unknown" where compressed
+objects could hide the answer. `palette_audit.py` needs Pillow. `rasterize.py` needs one of
+pdftoppm, Ghostscript, pypdfium2, or PyMuPDF.
 
 ---
 
 ## For maintainers
 
-Everything specific to GW lives in the skill's `brand/` folder:
-
 | File | Role |
 |---|---|
-| `brand/DESIGN.md` | The design specification — the source of truth for brand rules |
-| `brand/palette.json` | The colours from `DESIGN.md` §1, for the scripts |
-| `brand/profile.md` | The institution, the brand contexts (OSCON vs general OSPO), and who reads the reviews |
+| `SKILL.md` | The workflow: what the review can and cannot establish, content-type map, steps |
+| `references/gw-standards.md` | Summary of GW Policy and GW Standards with URLs. **Re-read the originals when either changes** (policy next review: 2027-2028) |
+| `references/accessibility-checks.md` | The checks. A tag decides the maximum severity: `[WCAG]` and `[GW Standards]` can be Must fix; `[House practice]` cannot |
+| `references/report-format.md` | Report structure, verdict rules, tone |
+| `brand/palette.json`, `brand/DESIGN.md`, `brand/profile.md` | Palette values used for contrast, copied from `gw-design-review` |
 
-The skill prefers a project's own `DESIGN.md` wherever it disagrees with `brand/DESIGN.md`.
+When the palette changes in `gw-design-review`, copy `brand/DESIGN.md` and `brand/palette.json`
+across; `scripts/build-skill-zip.sh` runs `scripts/check-palette.py` and refuses to build if
+the two disagree.
 
-When `DESIGN.md` changes:
-- If a colour changes, update `brand/palette.json` to match. `scripts/build-skill-zip.sh`
-  refuses to build if the two disagree.
-- Check `references/brand-checks.md` for values that need to follow — and if a *rule*
-  changes rather than a value, update the check, not just the number.
-
-### Why the skill lives in `.claude/skills/`
-
-The skill follows the [Agent Skills specification](https://agentskills.io/specification) —
-`SKILL.md` with `name`/`description` frontmatter, plus `scripts/`, `references/`, and
-`assets/` — so it is portable across clients. What is *not* standardised is the discovery
-directory, and as of September 2026 the clients differ:
-
-| Client | Reads |
-|---|---|
-| Claude Code / desktop / Cowork | `.claude/skills/` only |
-| ChatGPT / Codex | `.agents/skills/` (repo and `~/.agents/skills`) |
-| Cursor | `.agents/skills/`, `.cursor/skills/`, and `.claude/skills/` |
-| VS Code / Copilot | `.agents/skills/`, `.github/skills/`, and `.claude/skills/` |
-
-There is no single folder every client reads, so the canonical copy sits in
-`.claude/skills/` — the primary audience here is Claude Cowork — and the README tells Codex
-users to copy it into `.agents/skills/`.
-
-Do **not** solve this with a symlink. GitHub's *Download ZIP* converts symlinks into plain
-text files containing the target path, and downloading the ZIP is the route this README
-sends non-technical users down. If `.agents/skills/` ever needs to work out of the box,
-commit a second real copy and add a check that the two stay identical.
-
-### `gw-design-review.zip` must be rebuilt when the skill changes
-
-`gw-design-review.zip` at the repository root is the upload package for claude.ai. It is a
-**committed build artifact**, so it goes stale unless you rebuild it:
+`gw-accessibility-review.zip` is a committed build artifact. Rebuild it after any change:
 
 ```sh
 sh scripts/build-skill-zip.sh
 ```
 
-The script stages a clean copy, strips `.DS_Store`, and verifies that the archive contains
-`gw-design-review/SKILL.md` at exactly that depth before it exits.
-
-Why it exists: claude.ai rejects an upload whose `SKILL.md` is nested deeper than one
-folder. GitHub's own *Download ZIP* wraps everything in `gwospo-design-main/`, which puts
-`SKILL.md` four levels down — so students who uploaded the repository ZIP got
-"the MD file must be in the top-level folder". The README now sends them to this file
-instead and tells them explicitly not to upload the repository ZIP.
-
-<details>
-<summary>Using it from the command line</summary>
-
-Claude Code discovers the skill automatically when started inside the repository:
-
-```bash
-git clone https://github.com/gw-ospo/gwospo-design.git
-cd gwospo-design
-claude
-```
-
-To make it available in any folder, link it into your personal skills directory:
-
-```bash
-mkdir -p ~/.claude/skills
-ln -s "$PWD/.claude/skills/gw-design-review" ~/.claude/skills/gw-design-review
-```
-
-A symlink stays current as this repository is updated; use `cp -R` to pin a copy instead.
-
-The helper scripts are plain Python and are useful on their own. Claude runs them for you
-during a review, so you only need these if you want a number quickly:
-
-```bash
-cd .claude/skills/gw-design-review
-
-# WCAG contrast for one pair, or the whole palette against the usual backgrounds
-python3 scripts/contrast.py "#FFD34D" "#033C5A"
-python3 scripts/contrast.py --palette
-
-# Which colours are actually in a graphic (PNG, JPEG, or PDF), matched against the palette
-python3 scripts/palette_audit.py ~/Desktop/poster.png
-
-# Render PDF pages to PNGs, named by page number
-python3 scripts/rasterize.py ~/Desktop/prospectus.pdf --pages 2-4
-```
-
-`contrast.py` has no dependencies. `palette_audit.py` needs Pillow (`pip install Pillow`)
-and should be run on graphics rather than photographs — photographic content is exempt from
-the palette, and the script says so in its output. `rasterize.py` (and `palette_audit.py`
-on a PDF) needs one of pdftoppm, Ghostscript, `pip install pypdfium2`, or PyMuPDF; the
-error message says which to install. Both checkers read the palette from
-`brand/palette.json`; add `--design path/to/DESIGN.md` (or a `palette.json`) to use another
-project's palette instead.
-
-</details>
+See [`HISTORY.md`](HISTORY.md) for how the skill was derived and the decisions behind it.

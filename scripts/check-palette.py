@@ -12,7 +12,7 @@ import os
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-SKILL = os.path.join(ROOT, ".claude", "skills", "gw-design-review")
+SKILL = os.path.join(ROOT, ".claude", "skills", "gw-accessibility-review")
 sys.path.insert(0, os.path.join(SKILL, "scripts"))
 from gw_palette import _read_json, parse_design_md  # noqa: E402
 
